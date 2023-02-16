@@ -10,6 +10,8 @@ public class TileLogic : MonoBehaviour
     private SpriteRenderer tileRenderer;
     private bool hovered = false;
 
+    public UnitController unitOnTile;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,6 +33,11 @@ public class TileLogic : MonoBehaviour
     void OnMouseDown()
     {
         tileRenderer.color = activeColor;
+        if(unitOnTile != null)
+        {
+            unitOnTile.toggleMenu();
+            Camera.main.GetComponent<CameraController>().toggleCameraLock();
+        }
     }
 
     void OnMouseOver()
