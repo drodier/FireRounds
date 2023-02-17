@@ -7,13 +7,16 @@ public class TileLogic : MonoBehaviour
     private Color defaultColor = new Color(1.0f, 1.0f, 1.0f, 0.8f);
     private Color hoveredColor = new Color(0.4f, 1.0f, 0.4f, 0.8f);
     private Color activeColor = new Color(0.6f, 1.0f, 0.6f, 0.8f);
+    private Color activeRangeColor = new Color(0.6f, 0.6f, 1.0f, 0.8f);
+    private Unit unitMoving;
     private SpriteRenderer tileRenderer;
     private bool hovered = false;
+    private bool activeMovement = false;
 
-    public UnitController unitOnTile;
+    public Unit unitOnTile;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         tileRenderer = GetComponent<SpriteRenderer>();
         tileRenderer.color = defaultColor;
@@ -27,16 +30,38 @@ public class TileLogic : MonoBehaviour
 
     void FixedUpdate()
     {
-        tileRenderer.color = hovered ? hoveredColor : defaultColor;
+        if(!activeMovement)
+            tileRenderer.color = hovered ? hoveredColor : defaultColor;
+    }
+
+    public void setActiveRange(Unit unit)
+    {
+        tileRenderer.color = activeRangeColor;
+        activeMovement = true;
+        unitMoving = unit;
+    }
+
+    public void resetTile()
+    {
+        tileRenderer.color = defaultColor;
+        activeMovement = false;
     }
 
     void OnMouseDown()
     {
-        tileRenderer.color = activeColor;
-        if(unitOnTile != null)
+        if(activeMovement)
         {
-            unitOnTile.toggleMenu();
-            Camera.main.GetComponent<CameraController>().toggleCameraLock();
+            if(unitOnTile == null)
+            {
+                unitOnTile = unitMoving;
+                unitOnTile.move(this);
+                FindObjectOfType<MapLogic>().resetTiles();
+            }
+        }
+        else
+        {
+            tileRenderer.color = activeColor;
+            toggleUnitMenu();
         }
     }
 
@@ -48,5 +73,13 @@ public class TileLogic : MonoBehaviour
     void OnMouseExit()
     {
         hovered = false;
+    }
+
+    public void toggleUnitMenu()
+    {
+        if(unitOnTile != null)
+        {
+            unitOnTile.toggleMenu();
+        }
     }
 }
