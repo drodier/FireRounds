@@ -17,6 +17,5 @@ public class HpController : MonoBehaviour
         float delta = (float)unit.getHealth() / (float)unit.getMaxHealth();
         transform.localScale = new Vector2(delta, 1);
         transform.position = new Vector3(container.position.x - (1-transform.localScale.x)/1.33f, container.position.y, -1);
-        Debug.Log(delta);
     }
 }
