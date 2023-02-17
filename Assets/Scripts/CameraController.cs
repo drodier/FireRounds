@@ -5,7 +5,6 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     private Camera cam;
-    private bool locked;
     private float maxZoom = 2f;
     private float minZoom = 8f;
     private float amountToMove;
@@ -19,54 +18,44 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         cam = GetComponent<Camera>();
-        locked = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(!locked)
+        horizontalAxis = Input.GetAxis("Horizontal");
+        verticalAxis = Input.GetAxis("Vertical");
+
+        /*
+        if(Input.mousePosition.x <= 50)
+            horizontalAxis = -1f;
+        if(Input.mousePosition.x >= 1050)
+            horizontalAxis = 1f;
+        
+        if(Input.mousePosition.y <= 50)
+            verticalAxis = -1f;
+        if(Input.mousePosition.y >= 480)
+            verticalAxis = 1f;
+        */
+
+        amountToMove = Input.GetAxis("Mouse ScrollWheel") * zoomSpeed * Time.deltaTime;
+
+        if(cam.orthographicSize == maxZoom && amountToMove > 0)
         {
-            horizontalAxis = Input.GetAxis("Horizontal Camera");
-            verticalAxis = Input.GetAxis("Vertical Camera");
-
-            if(Input.mousePosition.x <= 50)
-                horizontalAxis = -1f;
-            if(Input.mousePosition.x >= 1050)
-                horizontalAxis = 1f;
-            
-            if(Input.mousePosition.y <= 50)
-                verticalAxis = -1f;
-            if(Input.mousePosition.y >= 480)
-                verticalAxis = 1f;
-
-            amountToMove = Input.GetAxis("Mouse ScrollWheel") * zoomSpeed * Time.deltaTime;
-
-            if(cam.orthographicSize == maxZoom && amountToMove > 0)
-            {
-                amountToMove = 0;
-            }
-            else if(cam.orthographicSize == minZoom && amountToMove < 0)
-            {
-                amountToMove = 0;
-            }
-
-            cam.orthographicSize -= amountToMove;
+            amountToMove = 0;
         }
+        else if(cam.orthographicSize == minZoom && amountToMove < 0)
+        {
+            amountToMove = 0;
+        }
+
+        cam.orthographicSize -= amountToMove;
     }
 
     void FixedUpdate()
     {
-        if(!locked)
-        {
-            cam.orthographicSize = cam.orthographicSize < maxZoom ? maxZoom : cam.orthographicSize > minZoom ? minZoom : cam.orthographicSize;
+        cam.orthographicSize = cam.orthographicSize < maxZoom ? maxZoom : cam.orthographicSize > minZoom ? minZoom : cam.orthographicSize;
 
-            cam.transform.position += new Vector3(horizontalAxis, verticalAxis, 0) * cameraSpeed * Time.deltaTime;
-        }
-    }
-
-    public void toggleCameraLock()
-    {
-        locked = !locked;
+        cam.transform.position += new Vector3(horizontalAxis, verticalAxis, 0) * cameraSpeed * Time.deltaTime;
     }
 }
