@@ -14,6 +14,13 @@ public class TileLogic : MonoBehaviour
     private bool activeMovement = false;
 
     public Unit unitOnTile;
+    public int tileType;
+    public Vector2 position;
+    public float height = 1;
+    public bool walkable = true;
+    public bool flyable = true;
+    public bool slowing;
+    public bool damaging;
 
     // Start is called before the first frame update
     void Awake()
