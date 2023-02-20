@@ -1,0 +1,21 @@
+{
+    "tiles":
+    [
+        {
+            "tileType":3,
+            "position":[0,0]
+        },
+        {
+            "tileType":3,
+            "position":[0,1]
+        },
+        {
+            "tileType":3,
+            "position":[1,0]
+        },
+        {
+            "tileType":3,
+            "position":[0,1]
+        }
+    ]
+}
