@@ -5,6 +5,10 @@ using UnityEngine;
 public class MapLogic : MonoBehaviour
 {
     private TileLogic[,] mapTiles;
+    private int mapSize;
+
+    public TileLogic[] tileTypes;
+    public TextAsset mapFile;
 
     // Start is called before the first frame update
     void Start()
@@ -20,15 +24,30 @@ public class MapLogic : MonoBehaviour
 
     private TileLogic[,] LoadTiles()
     {
-        TileLogic[] tiles = GetComponentsInChildren<TileLogic>();
-        TileLogic[,] map = new TileLogic[20,11];
+        TileLogic[] tiles = JsonUtility.FromJson<TileLogic[]>(mapFile.text);
+        mapSize = tileTypes.Length/4;
+        TileLogic[,] map = new TileLogic[mapSize,mapSize];
 
-        for(int y = 0; y <= 10; y++)
+        //foreach(TileLogic tile in tiles)
+        //{
+        //    Debug.Log(tile.name);
+        //}
+
+        for(int i=0; i<mapSize; i++)
         {
-            for(int x = 0; x <= 19; x++)
+            for(int y = 0; y <= mapSize; y++)
             {
-                TileLogic currentTile = tiles[(y*20)+x];
-                map[x,y] = currentTile;
+                for(int x = 0; x <= mapSize; x++)
+                {
+                    int currentTileType = tiles[(y*mapSize)+x].tileType;
+                    TileLogic currentTile = Instantiate(tileTypes[currentTileType]);
+
+                    currentTile.transform.position = currentTile.position;
+                    currentTile.position = new Vector2(x, y);
+                    currentTile.name = "["+x+","+y+"]";
+
+                    map[x,y] = currentTile;
+                }
             }
         }
         return map;
@@ -36,9 +55,9 @@ public class MapLogic : MonoBehaviour
 
     public void showMovementRange(Unit unit)
     {
-        for(int y = 0; y <= 10; y++)
+        for(int y = 0; y <= mapSize; y++)
         {
-            for(int x = 0; x <= 19; x++)
+            for(int x = 0; x <= mapSize; x++)
             {
                 if(Mathf.Abs(unit.position.x - x) + Mathf.Abs(unit.position.y - y) <= unit.getMovement())
                 {
@@ -50,39 +69,12 @@ public class MapLogic : MonoBehaviour
 
     public void resetTiles()
     {
-        for(int y = 0; y <= 10; y++)
+        for(int y = 0; y <= mapSize; y++)
         {
-            for(int x = 0; x <= 19; x++)
+            for(int x = 0; x <= mapSize; x++)
             {
                 mapTiles[x,y].resetTile();
             }
-        }
-    }
-
-    private void DebugMap()
-    {
-        for(int y = 0; y < 10; y++)
-        {
-            Debug.Log(mapTiles[0,y].name + "-" + 
-                        mapTiles[1,y].name + "-" + 
-                        mapTiles[2,y].name + "-" + 
-                        mapTiles[3,y].name + "-" + 
-                        mapTiles[4,y].name + "-" + 
-                        mapTiles[5,y].name + "-" + 
-                        mapTiles[6,y].name + "-" + 
-                        mapTiles[7,y].name + "-" + 
-                        mapTiles[8,y].name + "-" + 
-                        mapTiles[9,y].name + "-" + 
-                        mapTiles[10,y].name + "-" + 
-                        mapTiles[11,y].name + "-" + 
-                        mapTiles[12,y].name + "-" + 
-                        mapTiles[13,y].name + "-" + 
-                        mapTiles[14,y].name + "-" + 
-                        mapTiles[15,y].name + "-" + 
-                        mapTiles[16,y].name + "-" + 
-                        mapTiles[17,y].name + "-" + 
-                        mapTiles[18,y].name + "-" + 
-                        mapTiles[19,y].name);
         }
     }
 }
