@@ -853,17 +853,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 194b76285d0427f4bbe1923cae28f9ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tiles:
+    tiles: []
   tileTypes:
-  - {fileID: 8313852982484613098, guid: f566ecb7e66005d4ebe74acf2d691dd7, type: 3}
-  - {fileID: 8313852982484613098, guid: 6b001a1069e2e5643a704f90b223a53a, type: 3}
-  - {fileID: 8313852982484613098, guid: 69aefff012e03e441ba069906cd5cce7, type: 3}
-  - {fileID: 8313852982484613098, guid: a813fab211313ed48a56a2d4a6415d75, type: 3}
-  - {fileID: 8313852982484613098, guid: d6023cf2ddda6ca4997e37b322bb2cb9, type: 3}
-  - {fileID: 8313852982484613098, guid: 354a79fbba39e884db0b36627b2f65ea, type: 3}
-  - {fileID: 8313852982484613098, guid: 84a31d60a8c9bee44b6e86f8c9bfd388, type: 3}
-  - {fileID: 8313852982484613098, guid: 2ad53b4e1c1b53345a3472fe0f8de9e0, type: 3}
-  - {fileID: 8313852982484613098, guid: 9cf698dc331d5164cb60eb43f85a9485, type: 3}
-  - {fileID: 8313852982484613098, guid: a88b291098a00e04daaddaba15f920bc, type: 3}
+  - {fileID: 8313852982484613097, guid: f566ecb7e66005d4ebe74acf2d691dd7, type: 3}
+  - {fileID: 8313852982484613097, guid: 6b001a1069e2e5643a704f90b223a53a, type: 3}
+  - {fileID: 8313852982484613097, guid: 69aefff012e03e441ba069906cd5cce7, type: 3}
+  - {fileID: 8313852982484613097, guid: a813fab211313ed48a56a2d4a6415d75, type: 3}
+  - {fileID: 8313852982484613097, guid: d6023cf2ddda6ca4997e37b322bb2cb9, type: 3}
+  - {fileID: 8313852982484613097, guid: 354a79fbba39e884db0b36627b2f65ea, type: 3}
+  - {fileID: 8313852982484613097, guid: 84a31d60a8c9bee44b6e86f8c9bfd388, type: 3}
+  - {fileID: 8313852982484613097, guid: 2ad53b4e1c1b53345a3472fe0f8de9e0, type: 3}
+  - {fileID: 8313852982484613097, guid: 9cf698dc331d5164cb60eb43f85a9485, type: 3}
+  - {fileID: 8313852982484613097, guid: a88b291098a00e04daaddaba15f920bc, type: 3}
   mapFile: {fileID: 4900000, guid: 07cffd62ce6ecf941b067c64fa5d1750, type: 3}
 --- !u!1 &508831760
 GameObject:
