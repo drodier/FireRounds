@@ -70,8 +70,7 @@ public class Unit : MonoBehaviour
 
     public void showMovement()
     {
-        MapLogic map = FindObjectOfType<MapLogic>();
-        map.showMovementRange(this);
+        FindObjectOfType<MapLogic>().showMovementRange(this);
     }
 
     public void move(TileLogic tile)
