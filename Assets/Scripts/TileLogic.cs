@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TileLogic : MonoBehaviour
 {
-    private Color defaultColor = new Color(1.0f, 1.0f, 1.0f, 0.8f);
+    private Color defaultColor;
     private Color hoveredColor = new Color(0.4f, 1.0f, 0.4f, 0.8f);
     private Color activeColor = new Color(0.6f, 1.0f, 0.6f, 0.8f);
     private Color activeRangeColor = new Color(0.6f, 0.6f, 1.0f, 0.8f);
@@ -12,21 +12,15 @@ public class TileLogic : MonoBehaviour
     private SpriteRenderer tileRenderer;
     private bool hovered = false;
     private bool activeMovement = false;
+    private Unit unitOnTile;
 
-    public Unit unitOnTile;
-    public int tileType;
-    public Vector2 position;
-    public float height = 1;
-    public bool walkable = true;
-    public bool flyable = true;
-    public bool slowing;
-    public bool damaging;
+    public MapLogic.Tile stats;
 
     // Start is called before the first frame update
     void Awake()
     {
         tileRenderer = GetComponent<SpriteRenderer>();
-        tileRenderer.color = defaultColor;
+        defaultColor = tileRenderer.color;
     }
 
     // Update is called once per frame
