@@ -4,10 +4,30 @@ using UnityEngine;
 
 public class MapLogic : MonoBehaviour
 {
-    private TileLogic[,] mapTiles;
-    private int mapSize;
+    [System.Serializable]
+    public class Tile
+    {
+        public int tileType;
+        public int[] position;
+        public float height = 1;
+        public bool walkable = true;
+        public bool flyable = true;
+        public bool slowing = false;
+        public bool damaging = false;
+    }
+    
+    [System.Serializable]
+    public class TileList
+    {
+        public Tile[] tiles;
+    }
 
-    public TileLogic[] tileTypes;
+    public TileList tiles = new TileList();
+    private TileLogic[,] mapTiles;
+    private int mapSizeX;
+    private int mapSizeY;
+
+    public GameObject[] tileTypes;
     public TextAsset mapFile;
 
     // Start is called before the first frame update
@@ -24,30 +44,26 @@ public class MapLogic : MonoBehaviour
 
     private TileLogic[,] LoadTiles()
     {
-        TileLogic[] tiles = JsonUtility.FromJson<TileLogic[]>(mapFile.text);
-        mapSize = tileTypes.Length/4;
-        TileLogic[,] map = new TileLogic[mapSize,mapSize];
+        tiles = JsonUtility.FromJson<TileList>(mapFile.text);
+        mapSizeX = tiles.tiles[tiles.tiles.Length-1].position[0]+1;
+        mapSizeY = tiles.tiles[tiles.tiles.Length-1].position[1]+1;
+        TileLogic[,] map = new TileLogic[mapSizeX,mapSizeY];
 
-        //foreach(TileLogic tile in tiles)
-        //{
-        //    Debug.Log(tile.name);
-        //}
-
-        for(int i=0; i<mapSize; i++)
+        for(int y = 0; y < mapSizeY; y++)
         {
-            for(int y = 0; y <= mapSize; y++)
+            for(int x = 0; x < mapSizeX; x++)
             {
-                for(int x = 0; x <= mapSize; x++)
-                {
-                    int currentTileType = tiles[(y*mapSize)+x].tileType;
-                    TileLogic currentTile = Instantiate(tileTypes[currentTileType]);
+                Tile currentTileStats = tiles.tiles[(y*mapSizeX)+x];
+                GameObject currentTile = Instantiate(tileTypes[currentTileStats.tileType]);
+                currentTile.transform.parent = this.transform;
+                TileLogic currentLogic = currentTile.AddComponent<TileLogic>();
+                currentLogic.stats = currentTileStats;
 
-                    currentTile.transform.position = currentTile.position;
-                    currentTile.position = new Vector2(x, y);
-                    currentTile.name = "["+x+","+y+"]";
+                currentTile.transform.position = new Vector2(x,y);
+                currentLogic.stats = currentTileStats;
+                currentTile.name = "["+x+","+y+"]";
 
-                    map[x,y] = currentTile;
-                }
+                map[x,y] = currentLogic;
             }
         }
         return map;
@@ -55,9 +71,9 @@ public class MapLogic : MonoBehaviour
 
     public void showMovementRange(Unit unit)
     {
-        for(int y = 0; y <= mapSize; y++)
+        for(int y = 0; y <= mapSizeY; y++)
         {
-            for(int x = 0; x <= mapSize; x++)
+            for(int x = 0; x <= mapSizeX; x++)
             {
                 if(Mathf.Abs(unit.position.x - x) + Mathf.Abs(unit.position.y - y) <= unit.getMovement())
                 {
@@ -69,9 +85,9 @@ public class MapLogic : MonoBehaviour
 
     public void resetTiles()
     {
-        for(int y = 0; y <= mapSize; y++)
+        for(int y = 0; y <= mapSizeY; y++)
         {
-            for(int x = 0; x <= mapSize; x++)
+            for(int x = 0; x <= mapSizeX; x++)
             {
                 mapTiles[x,y].resetTile();
             }
