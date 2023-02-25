@@ -16,6 +16,7 @@ public class Unit : MonoBehaviour
     protected int maxMana;
     protected int maxMovement;
     protected int initiative;
+    protected bool isActive = false;
 
 
     public void FixedUpdate()
@@ -58,6 +59,16 @@ public class Unit : MonoBehaviour
         return maxHealth;
     }
 
+    public bool getActive()
+    {
+        return isActive;
+    }
+
+    public void toggleActive()
+    {
+        isActive = !isActive;
+    }
+
     public int healUnit(int healAmount)
     {
         return currentHealth = currentHealth + healAmount < maxHealth ? maxHealth : currentHealth + healAmount;
@@ -65,7 +76,7 @@ public class Unit : MonoBehaviour
 
     public void toggleMenu()
     {
-        menu.enabled = !menu.enabled;
+        menu.enabled = menu.enabled ? false : isActive;
     }
 
     public void showMovement()
@@ -77,6 +88,11 @@ public class Unit : MonoBehaviour
     {
         currentTile = tile;
         position = currentTile.transform.position;
+    }
+
+    public void endTurn()
+    {
+        FindObjectOfType<UnitsManager>().NextTurn();
     }
 
     public void DebugUnit()
