@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Warrior : Unit
 {
-    public void Awake()
+    public Warrior(int _level)
     {
         menu.enabled = false;
         level = 1;

@@ -67,6 +67,7 @@ public class Unit : MonoBehaviour
     public void toggleActive()
     {
         isActive = !isActive;
+        toggleMenu();
     }
 
     public int healUnit(int healAmount)
@@ -82,17 +83,20 @@ public class Unit : MonoBehaviour
     public void showMovement()
     {
         FindObjectOfType<MapLogic>().showMovementRange(this);
+        toggleMenu();
     }
 
     public void move(TileLogic tile)
     {
         currentTile = tile;
         position = currentTile.transform.position;
+        toggleMenu();
     }
 
     public void endTurn()
     {
         FindObjectOfType<UnitsManager>().NextTurn();
+        toggleMenu();
     }
 
     public void DebugUnit()

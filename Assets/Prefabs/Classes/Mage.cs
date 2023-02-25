@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Mage : Unit
 {
-    public void Awake()
+    public Mage(int _level)
     {
         menu.enabled = false;
         level = 1;

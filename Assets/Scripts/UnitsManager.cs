@@ -5,7 +5,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class UnitsManager : MonoBehaviour
-{
+{    
+    [System.Serializable]
+    public class UnitList
+    {
+        public UnitData[] units;
+    }
+    public UnitList unitsData = new UnitList();
+    public TextAsset team;
+
     private Color inactiveColor = new Color(0.2f, 0.2f, 0.2f, 0.8f);
     private Color activeColor = new Color(0.2f, 0.8f, 0.2f, 0.8f);
     private int currentUnitId = 0;
@@ -13,9 +21,9 @@ public class UnitsManager : MonoBehaviour
 
     public GameObject canvas;
     public UnitCard unitCard;
-    public Unit[] units = new Unit[2];
+    public ArrayList units = new ArrayList();
     public GameObject[] unitTypes;
-    public MapLogic.Tile[,] mapGrid;
+    public Tile[,] mapGrid;
 
     public void StartIniative()
     {
@@ -37,17 +45,29 @@ public class UnitsManager : MonoBehaviour
 
     public void LoadUnits()
     {
-        units[0] = Instantiate(unitTypes[0]).GetComponent<Unit>();
-        units[0].position = new Vector2(0,0);
-        units[0].currentTile = GameObject.Find("[0,0]").GetComponent<TileLogic>();
-        units[0].currentTile.unitOnTile = units[0];
-        units[0].name = "Mage";
+        unitsData = JsonUtility.FromJson<UnitList>(team.text);
+        foreach(UnitData data in units)
+        {
+            GameObject currentUnit;
+            switch(data._class)
+            {
+                case "Mage":
+                    currentUnit = Instantiate(unitTypes[0]);
+                    currentUnit.AddComponent(new Mage(data._level));
+                break;
+                case "Warrior":
+                    currentUnit = Instantiate(unitTypes[1]);
+                    currentUnit.AddComponent(new Mage(data._level));
+                break;
+            }
 
-        units[1] = Instantiate(unitTypes[1]).GetComponent<Unit>();
-        units[1].position = new Vector2(3,3);
-        units[1].currentTile = GameObject.Find("[3,3]").GetComponent<TileLogic>();
-        units[1].currentTile.unitOnTile = units[1];
-        units[1].name = "Warrior";
+            currentUnit.name = data._class;
+            currentUnit.GetComponent<Unit>().position = new Vector2(data._position[0],data._position[1]);
+            currentUnit.GetComponent<Unit>().currentTile = GameObject.Find("["+data._position[0]+","+data._position[1]+"]").GetComponent<TileLogic>();
+            currentUnit.GetComponent<Unit>().currentTile.unitOnTile = currentUnit;
+
+            units.Add(currentUnit);
+        }
 
         StartIniative();
     }
