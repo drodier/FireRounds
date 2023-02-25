@@ -12,9 +12,9 @@ public class TileLogic : MonoBehaviour
     private SpriteRenderer tileRenderer;
     private bool hovered = false;
     private bool activeMovement = false;
-    private Unit unitOnTile;
 
     public MapLogic.Tile stats;
+    public Unit unitOnTile;
 
     // Start is called before the first frame update
     void Awake()
