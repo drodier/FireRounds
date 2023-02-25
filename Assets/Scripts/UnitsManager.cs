@@ -6,7 +6,7 @@ using UnityEngine;
 public class UnitsManager : MonoBehaviour
 {
     public Unit[] units;
-    public TileLogic[,] mapGrid;
+    public MapLogic.Tile[,] mapGrid;
 
     // Start is called before the first frame update
     void Start()
