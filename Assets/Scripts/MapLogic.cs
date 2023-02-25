@@ -66,14 +66,17 @@ public class MapLogic : MonoBehaviour
                 map[x,y] = currentLogic;
             }
         }
+
+        GameObject.Find("GameManager").GetComponent<UnitsManager>().LoadUnits();
+
         return map;
     }
 
     public void showMovementRange(Unit unit)
     {
-        for(int y = 0; y <= mapSizeY; y++)
+        for(int y = 0; y < mapSizeY; y++)
         {
-            for(int x = 0; x <= mapSizeX; x++)
+            for(int x = 0; x < mapSizeX; x++)
             {
                 if(Mathf.Abs(unit.position.x - x) + Mathf.Abs(unit.position.y - y) <= unit.getMovement())
                 {
@@ -85,9 +88,9 @@ public class MapLogic : MonoBehaviour
 
     public void resetTiles()
     {
-        for(int y = 0; y <= mapSizeY; y++)
+        for(int y = 0; y < mapSizeY; y++)
         {
-            for(int x = 0; x <= mapSizeX; x++)
+            for(int x = 0; x < mapSizeX; x++)
             {
                 mapTiles[x,y].resetTile();
             }
