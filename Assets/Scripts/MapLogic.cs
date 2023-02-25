@@ -4,7 +4,31 @@ using UnityEngine;
 
 public class MapLogic : MonoBehaviour
 {
+    [System.Serializable]
+    public class Tile
+    {
+        public int tileType;
+        public int[] position;
+        public float height = 1;
+        public bool walkable = true;
+        public bool flyable = true;
+        public bool slowing = false;
+        public bool damaging = false;
+    }
+    
+    [System.Serializable]
+    public class TileList
+    {
+        public Tile[] tiles;
+    }
+
+    public TileList tiles = new TileList();
     private TileLogic[,] mapTiles;
+    private int mapSizeX;
+    private int mapSizeY;
+
+    public GameObject[] tileTypes;
+    public TextAsset mapFile;
 
     // Start is called before the first frame update
     void Start()
@@ -20,15 +44,26 @@ public class MapLogic : MonoBehaviour
 
     private TileLogic[,] LoadTiles()
     {
-        TileLogic[] tiles = GetComponentsInChildren<TileLogic>();
-        TileLogic[,] map = new TileLogic[20,11];
+        tiles = JsonUtility.FromJson<TileList>(mapFile.text);
+        mapSizeX = tiles.tiles[tiles.tiles.Length-1].position[0]+1;
+        mapSizeY = tiles.tiles[tiles.tiles.Length-1].position[1]+1;
+        TileLogic[,] map = new TileLogic[mapSizeX,mapSizeY];
 
-        for(int y = 0; y <= 10; y++)
+        for(int y = 0; y < mapSizeY; y++)
         {
-            for(int x = 0; x <= 19; x++)
+            for(int x = 0; x < mapSizeX; x++)
             {
-                TileLogic currentTile = tiles[(y*20)+x];
-                map[x,y] = currentTile;
+                Tile currentTileStats = tiles.tiles[(y*mapSizeX)+x];
+                GameObject currentTile = Instantiate(tileTypes[currentTileStats.tileType]);
+                currentTile.transform.parent = this.transform;
+                TileLogic currentLogic = currentTile.AddComponent<TileLogic>();
+                currentLogic.stats = currentTileStats;
+
+                currentTile.transform.position = new Vector2(x,y);
+                currentLogic.stats = currentTileStats;
+                currentTile.name = "["+x+","+y+"]";
+
+                map[x,y] = currentLogic;
             }
         }
         return map;
@@ -36,9 +71,9 @@ public class MapLogic : MonoBehaviour
 
     public void showMovementRange(Unit unit)
     {
-        for(int y = 0; y <= 10; y++)
+        for(int y = 0; y <= mapSizeY; y++)
         {
-            for(int x = 0; x <= 19; x++)
+            for(int x = 0; x <= mapSizeX; x++)
             {
                 if(Mathf.Abs(unit.position.x - x) + Mathf.Abs(unit.position.y - y) <= unit.getMovement())
                 {
@@ -50,39 +85,12 @@ public class MapLogic : MonoBehaviour
 
     public void resetTiles()
     {
-        for(int y = 0; y <= 10; y++)
+        for(int y = 0; y <= mapSizeY; y++)
         {
-            for(int x = 0; x <= 19; x++)
+            for(int x = 0; x <= mapSizeX; x++)
             {
                 mapTiles[x,y].resetTile();
             }
-        }
-    }
-
-    private void DebugMap()
-    {
-        for(int y = 0; y < 10; y++)
-        {
-            Debug.Log(mapTiles[0,y].name + "-" + 
-                        mapTiles[1,y].name + "-" + 
-                        mapTiles[2,y].name + "-" + 
-                        mapTiles[3,y].name + "-" + 
-                        mapTiles[4,y].name + "-" + 
-                        mapTiles[5,y].name + "-" + 
-                        mapTiles[6,y].name + "-" + 
-                        mapTiles[7,y].name + "-" + 
-                        mapTiles[8,y].name + "-" + 
-                        mapTiles[9,y].name + "-" + 
-                        mapTiles[10,y].name + "-" + 
-                        mapTiles[11,y].name + "-" + 
-                        mapTiles[12,y].name + "-" + 
-                        mapTiles[13,y].name + "-" + 
-                        mapTiles[14,y].name + "-" + 
-                        mapTiles[15,y].name + "-" + 
-                        mapTiles[16,y].name + "-" + 
-                        mapTiles[17,y].name + "-" + 
-                        mapTiles[18,y].name + "-" + 
-                        mapTiles[19,y].name);
         }
     }
 }
