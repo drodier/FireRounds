@@ -492,11 +492,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0af4bbec0e4f3764ba956f567e98c88b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unitsData:
+    units: []
+  team: {fileID: 4900000, guid: 9f04c370672518441b1015b0153eab21, type: 3}
   canvas: {fileID: 1152224481}
   unitCard: {fileID: 8866903950304601057, guid: ef4c281aef14b694499565712ef3c559, type: 3}
-  units:
-  - {fileID: 0}
-  - {fileID: 0}
-  unitTypes:
-  - {fileID: 7195465254068705769, guid: 95a68848ac15a0e42a2773b5715d242c, type: 3}
-  - {fileID: 7195465254068705769, guid: 9f2d33f1b0dfe60438343ea4ee059857, type: 3}
+  unitType: {fileID: 7195465254068705769, guid: 5fcaf6a44032aa243a0ac7c6e0dc1728, type: 3}
