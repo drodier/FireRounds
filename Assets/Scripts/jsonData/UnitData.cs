@@ -2,6 +2,6 @@
 public class UnitData
 {
     public int _level;
-    public int _class;
+    public string _class;
     public int[] _position;
 }

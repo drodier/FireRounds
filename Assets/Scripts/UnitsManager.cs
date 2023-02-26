@@ -22,49 +22,52 @@ public class UnitsManager : MonoBehaviour
     public GameObject canvas;
     public UnitCard unitCard;
     public ArrayList units = new ArrayList();
-    public GameObject[] unitTypes;
+    public GameObject unitType;
     public Tile[,] mapGrid;
 
     public void StartIniative()
     {
-        Array.Sort(units, new UnitComparer());
+        SortUnits();
 
-        for(int i=0; i<units.Length; i++)
+        for(int i=0; i<units.Count; i++)
         {
             UnitCard currentCard = Instantiate(unitCard);
             currentCard.transform.SetParent(canvas.transform, false);
-            currentCard.SetUnit(units[i]);
+            currentCard.SetUnit(((GameObject)units[i]).GetComponent<Unit>());
             currentCard.transform.position += new Vector3(i*75, 0, 0);
             cards.Add(currentCard);
         }
 
         currentUnitId = 0;
-        units[currentUnitId].toggleActive();
+        ((GameObject)units[currentUnitId]).GetComponent<Unit>().toggleActive();
         ((UnitCard)cards[currentUnitId]).GetComponent<Image>().color = activeColor;
     }
 
     public void LoadUnits()
     {
         unitsData = JsonUtility.FromJson<UnitList>(team.text);
-        foreach(UnitData data in units)
+
+        foreach(UnitData data in unitsData.units)
         {
-            GameObject currentUnit;
+            GameObject currentUnit = Instantiate(unitType);
+
             switch(data._class)
             {
                 case "Mage":
-                    currentUnit = Instantiate(unitTypes[0]);
-                    currentUnit.AddComponent(new Mage(data._level));
+                    currentUnit.GetComponent<Unit>().unitClass = new Mage(data._level);
                 break;
                 case "Warrior":
-                    currentUnit = Instantiate(unitTypes[1]);
-                    currentUnit.AddComponent(new Mage(data._level));
+                    currentUnit.GetComponent<Unit>().unitClass = new Warrior(data._level);
                 break;
             }
 
             currentUnit.name = data._class;
             currentUnit.GetComponent<Unit>().position = new Vector2(data._position[0],data._position[1]);
             currentUnit.GetComponent<Unit>().currentTile = GameObject.Find("["+data._position[0]+","+data._position[1]+"]").GetComponent<TileLogic>();
-            currentUnit.GetComponent<Unit>().currentTile.unitOnTile = currentUnit;
+            currentUnit.GetComponent<Unit>().currentTile.unitOnTile = currentUnit.GetComponent<Unit>();
+            currentUnit.GetComponent<Unit>().currentHealth = currentUnit.GetComponent<Unit>().unitClass.maxHealth;
+            currentUnit.GetComponent<Unit>().currentMana = currentUnit.GetComponent<Unit>().unitClass.maxMana;
+            currentUnit.transform.SetParent(transform);
 
             units.Add(currentUnit);
         }
@@ -74,12 +77,12 @@ public class UnitsManager : MonoBehaviour
 
     public void NextTurn()
     {
-        units[currentUnitId].toggleActive();
+        ((GameObject)units[currentUnitId]).GetComponent<Unit>().toggleActive();
         ((UnitCard)cards[currentUnitId]).GetComponent<Image>().color = inactiveColor;
 
-        currentUnitId = currentUnitId + 1 >= units.Length ? 0 : currentUnitId + 1;
+        currentUnitId = currentUnitId + 1 >= units.Count ? 0 : currentUnitId + 1;
 
-        units[currentUnitId].toggleActive();
+        ((GameObject)units[currentUnitId]).GetComponent<Unit>().toggleActive();
         ((UnitCard)cards[currentUnitId]).GetComponent<Image>().color = activeColor;
     }
 
@@ -91,6 +94,22 @@ public class UnitsManager : MonoBehaviour
                         "Hp : " + unit.getHealth() + "/" + unit.getMaxHealth() + "\n" +
                         "Mana : " + unit.getMana() + "/" + unit.getMaxMana() + "\n" +
                         "Initiative : " + unit.getInitiative());
+        }
+    }
+
+    private void SortUnits()
+    {
+        for(int i=0;i<units.Count-1;i++)
+        {
+            for(int j=0;j<units.Count-(i+1);j++)
+            {
+                if(((GameObject)units[j]).GetComponent<Unit>().getInitiative() >= ((GameObject)units[j+1]).GetComponent<Unit>().getInitiative())
+                {
+                    GameObject tempUnit = (GameObject)units[j];
+                    units.RemoveAt(j);
+                    units.Add(tempUnit);
+                }
+            }
         }
     }
 }
