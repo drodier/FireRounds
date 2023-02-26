@@ -2,15 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Warrior : Unit
+public class Warrior : UnitClass
 {
-    public void Awake()
+    public Warrior(int _level)
     {
-        menu.enabled = false;
-        level = 1;
-        currentHealth = maxHealth = 100 + level^2;
-        currentMana = maxMana = 50 + level^2;
-        maxMovement = 4;
-        initiative = Random.Range(0, 100 - level^2);
+        level = _level;
+        maxHealth = 100 + level^2;
+        maxMana = 50 + level^2;
+        maxMovement = 3;
+        initiative = Random.Range(0, 80 - level^2);
     }
 }

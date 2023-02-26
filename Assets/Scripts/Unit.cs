@@ -4,18 +4,14 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
-    public Canvas menu;
+    public Canvas menu = new Canvas();
     public TileLogic currentTile;
     public Vector2 position;
+    public UnitClass unitClass;
 
 
-    protected int level;
-    protected int currentHealth;
-    protected int maxHealth;
-    protected int currentMana;
-    protected int maxMana;
-    protected int maxMovement;
-    protected int initiative;
+    public int currentHealth;
+    public int currentMana;    
     protected bool isActive = false;
 
 
@@ -26,12 +22,12 @@ public class Unit : MonoBehaviour
     
     public int getMovement()
     {
-        return maxMovement;
+        return unitClass.maxMovement;
     }
 
     public int getInitiative()
     {
-        return initiative;
+        return unitClass.initiative;
     }
 
     public int damageUnit(int damage)
@@ -46,7 +42,7 @@ public class Unit : MonoBehaviour
 
     public int getMaxMana()
     {
-        return maxMana;
+        return unitClass.maxMana;
     }
 
     public int getHealth()
@@ -56,7 +52,7 @@ public class Unit : MonoBehaviour
 
     public int getMaxHealth()
     {
-        return maxHealth;
+        return unitClass.maxHealth;
     }
 
     public bool getActive()
@@ -67,11 +63,12 @@ public class Unit : MonoBehaviour
     public void toggleActive()
     {
         isActive = !isActive;
+        toggleMenu();
     }
 
     public int healUnit(int healAmount)
     {
-        return currentHealth = currentHealth + healAmount < maxHealth ? maxHealth : currentHealth + healAmount;
+        return currentHealth = currentHealth + healAmount < unitClass.maxHealth ? unitClass.maxHealth : currentHealth + healAmount;
     }
 
     public void toggleMenu()
@@ -82,22 +79,32 @@ public class Unit : MonoBehaviour
     public void showMovement()
     {
         FindObjectOfType<MapLogic>().showMovementRange(this);
+        toggleMenu();
     }
 
     public void move(TileLogic tile)
     {
         currentTile = tile;
         position = currentTile.transform.position;
+        toggleMenu();
     }
 
     public void endTurn()
     {
         FindObjectOfType<UnitsManager>().NextTurn();
+        toggleMenu();
     }
 
     public void DebugUnit()
     {
         currentHealth -= 1;
         currentMana -= 1;
+    }
+
+    public int Compare(object other)
+    {
+        return getInitiative() == ((Unit)other).getInitiative() ? 0 
+                : (getInitiative() < ((Unit)other).getInitiative() ? -1 
+                : 1);
     }
 }

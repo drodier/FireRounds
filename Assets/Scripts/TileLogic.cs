@@ -13,7 +13,7 @@ public class TileLogic : MonoBehaviour
     private bool hovered = false;
     private bool activeMovement = false;
 
-    public MapLogic.Tile stats;
+    public Tile stats;
     public Unit unitOnTile;
 
     // Start is called before the first frame update

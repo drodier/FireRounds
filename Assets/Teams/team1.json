@@ -1,0 +1,24 @@
+{
+    "units" : [
+        {
+            "_level":1,
+            "_class":"Mage",
+            "_position":[0,0]
+        },
+        {
+            "_level":2,
+            "_class":"Warrior",
+            "_position":[0,1]
+        },
+        {
+            "_level":1,
+            "_class":"Warrior",
+            "_position":[2,3]
+        },
+        {
+            "_level":2,
+            "_class":"Warrior",
+            "_position":[3,3]
+        }
+    ]
+}

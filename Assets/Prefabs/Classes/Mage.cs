@@ -2,14 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Mage : Unit
+public class Mage : UnitClass
 {
-    public void Awake()
+    public Mage(int _level)
     {
-        menu.enabled = false;
         level = 1;
-        currentHealth = maxHealth = 50 + level^2;
-        currentMana = maxMana = 100 + level^2;
+        maxHealth = 50 + level^2;
+        maxMana = 100 + level^2;
         maxMovement = 3;
         initiative = Random.Range(0, 80 - level^2);
     }
