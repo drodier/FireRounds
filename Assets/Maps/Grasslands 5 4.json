@@ -37,6 +37,15 @@
             "damaging":false
         },
         {
+            "tileType":2,
+            "position":[4,0],
+            "height":1,
+            "walkable":true,
+            "flyable":true,
+            "slowing":false,
+            "damaging":false
+        },
+        {
             "tileType":1,
             "position":[0,1],
             "height":1,
@@ -138,6 +147,42 @@
         {
             "tileType":1,
             "position":[3,3],
+            "height":1,
+            "walkable":true,
+            "flyable":true,
+            "slowing":false,
+            "damaging":false
+        },
+        {
+            "tileType":1,
+            "position":[4,1],
+            "height":1,
+            "walkable":true,
+            "flyable":true,
+            "slowing":false,
+            "damaging":false
+        },
+        {
+            "tileType":1,
+            "position":[4,2],
+            "height":1,
+            "walkable":true,
+            "flyable":true,
+            "slowing":false,
+            "damaging":false
+        },
+        {
+            "tileType":1,
+            "position":[4,3],
+            "height":1,
+            "walkable":true,
+            "flyable":true,
+            "slowing":false,
+            "damaging":false
+        },
+        {
+            "tileType":2,
+            "position":[4,0],
             "height":1,
             "walkable":true,
             "flyable":true,

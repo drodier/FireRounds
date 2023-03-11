@@ -10,18 +10,21 @@ public class MapLogic : MonoBehaviour
         public Tile[] tiles;
     }
 
-    public TileList tiles = new TileList();
     private GameObject[,] mapTiles;
     private int mapSizeX;
     private int mapSizeY;
 
+    public TileList tiles = new TileList();
     public TextAsset mapFile;
     public GameObject defaultTile;
+    public CameraController cam;
 
     // Start is called before the first frame update
     void Start()
     {
         mapTiles = LoadTiles();
+
+        cam.mapSize = new Vector2(mapSizeX, mapSizeY);
     }
 
     // Update is called once per frame
@@ -33,8 +36,8 @@ public class MapLogic : MonoBehaviour
     private GameObject[,] LoadTiles()
     {
         tiles = JsonUtility.FromJson<TileList>(mapFile.text);
-        mapSizeX = tiles.tiles[tiles.tiles.Length-1].position[0]+1;
-        mapSizeY = tiles.tiles[tiles.tiles.Length-1].position[1]+1;
+        mapSizeX = int.Parse(mapFile.name.Split(" ")[1]);
+        mapSizeY = int.Parse(mapFile.name.Split(" ")[2]);
 
         GameObject[,] map = new GameObject[mapSizeX,mapSizeY];
 
@@ -42,15 +45,18 @@ public class MapLogic : MonoBehaviour
         {
             for(int x = 0; x < mapSizeX; x++)
             {
-                Tile currentTileStats = tiles.tiles[(y*mapSizeX)+x];
+                Tile currentTileStats = tiles.tiles[x + (mapSizeX * y)];
                 GameObject currentTile = Instantiate(defaultTile);
 
+                int tileX = currentTileStats.position[0];
+                int tileY = currentTileStats.position[1];
+
                 currentTile.transform.parent = this.transform;
-                currentTile.transform.position = new Vector3(x,0,y);
-                currentTile.name = "["+x+","+y+"]";
+                currentTile.transform.position = new Vector3(tileX,0,tileY);
+                currentTile.name = "["+tileX+","+tileY+"]";
 
                 currentTile.GetComponent<TileLogic>().stats = currentTileStats;
-                map[x,y] = currentTile;
+                map[tileX,tileY] = currentTile;
             }
         }
 
