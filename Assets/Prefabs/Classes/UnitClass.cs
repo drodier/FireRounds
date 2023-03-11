@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class UnitClass
 {
+    public Material unitMaterial;
     public int level;
     public int maxHealth;
     public int maxMana;

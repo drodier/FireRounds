@@ -5,57 +5,30 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     private Camera cam;
-    private float maxZoom = 2f;
-    private float minZoom = 8f;
-    private float amountToMove;
-    private float horizontalAxis = 0f;
-    private float verticalAxis = 0f;
+    private int currentPosition = 0;
 
-    public float cameraSpeed = 0.5f;
-    public float zoomSpeed = 500f;
+    public Vector3[] positions;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        cam = GetComponent<Camera>();
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        horizontalAxis = Input.GetAxis("Horizontal");
-        verticalAxis = Input.GetAxis("Vertical");
-
-        /*
-        if(Input.mousePosition.x <= 50)
-            horizontalAxis = -1f;
-        if(Input.mousePosition.x >= 1050)
-            horizontalAxis = 1f;
-        
-        if(Input.mousePosition.y <= 50)
-            verticalAxis = -1f;
-        if(Input.mousePosition.y >= 480)
-            verticalAxis = 1f;
-        */
-
-        amountToMove = Input.GetAxis("Mouse ScrollWheel") * zoomSpeed * Time.deltaTime;
-
-        if(cam.orthographicSize == maxZoom && amountToMove > 0)
+        if(Input.GetKeyUp(KeyCode.A))
         {
-            amountToMove = 0;
+            currentPosition--;
+            if(currentPosition < 0)
+                currentPosition = positions.Length-1;
+            transform.Rotate(new Vector3(0, 1, 0), 90);
         }
-        else if(cam.orthographicSize == minZoom && amountToMove < 0)
+        if(Input.GetKeyUp(KeyCode.D))
         {
-            amountToMove = 0;
+            currentPosition++;
+            if(currentPosition >= positions.Length)
+                currentPosition = 0;
+            transform.Rotate(new Vector3(0, 1, 0), -90);
         }
-
-        cam.orthographicSize -= amountToMove;
     }
 
     void FixedUpdate()
     {
-        cam.orthographicSize = cam.orthographicSize < maxZoom ? maxZoom : cam.orthographicSize > minZoom ? minZoom : cam.orthographicSize;
-
-        cam.transform.position += new Vector3(horizontalAxis, verticalAxis, 0) * cameraSpeed * Time.deltaTime;
+        transform.position = positions[currentPosition];
     }
 }
