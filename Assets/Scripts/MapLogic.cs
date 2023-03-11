@@ -11,12 +11,12 @@ public class MapLogic : MonoBehaviour
     }
 
     public TileList tiles = new TileList();
-    private TileLogic[,] mapTiles;
+    private GameObject[,] mapTiles;
     private int mapSizeX;
     private int mapSizeY;
 
-    public GameObject[] tileTypes;
     public TextAsset mapFile;
+    public GameObject defaultTile;
 
     // Start is called before the first frame update
     void Start()
@@ -30,28 +30,27 @@ public class MapLogic : MonoBehaviour
         
     }
 
-    private TileLogic[,] LoadTiles()
+    private GameObject[,] LoadTiles()
     {
         tiles = JsonUtility.FromJson<TileList>(mapFile.text);
         mapSizeX = tiles.tiles[tiles.tiles.Length-1].position[0]+1;
         mapSizeY = tiles.tiles[tiles.tiles.Length-1].position[1]+1;
-        TileLogic[,] map = new TileLogic[mapSizeX,mapSizeY];
+
+        GameObject[,] map = new GameObject[mapSizeX,mapSizeY];
 
         for(int y = 0; y < mapSizeY; y++)
         {
             for(int x = 0; x < mapSizeX; x++)
             {
                 Tile currentTileStats = tiles.tiles[(y*mapSizeX)+x];
-                GameObject currentTile = Instantiate(tileTypes[currentTileStats.tileType]);
-                currentTile.transform.parent = this.transform;
-                TileLogic currentLogic = currentTile.AddComponent<TileLogic>();
-                currentLogic.stats = currentTileStats;
+                GameObject currentTile = Instantiate(defaultTile);
 
-                currentTile.transform.position = new Vector2(x,y);
-                currentLogic.stats = currentTileStats;
+                currentTile.transform.parent = this.transform;
+                currentTile.transform.position = new Vector3(x,0,y);
                 currentTile.name = "["+x+","+y+"]";
 
-                map[x,y] = currentLogic;
+                currentTile.GetComponent<TileLogic>().stats = currentTileStats;
+                map[x,y] = currentTile;
             }
         }
 
@@ -68,7 +67,7 @@ public class MapLogic : MonoBehaviour
             {
                 if(Mathf.Abs(unit.position.x - x) + Mathf.Abs(unit.position.y - y) <= unit.getMovement())
                 {
-                    mapTiles[x,y].setActiveRange(unit);
+                    mapTiles[x,y].GetComponent<TileLogic>().setActiveRange(unit);
                 }
             }
         }
@@ -80,7 +79,7 @@ public class MapLogic : MonoBehaviour
         {
             for(int x = 0; x < mapSizeX; x++)
             {
-                mapTiles[x,y].resetTile();
+                mapTiles[x,y].GetComponent<TileLogic>().resetTile();
             }
         }
     }
