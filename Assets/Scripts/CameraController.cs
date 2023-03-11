@@ -4,31 +4,27 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    private Camera cam;
-    private int currentPosition = 0;
+    public Vector2 mapSize;
+    public float cameraSpeed;
 
-    public Vector3[] positions;
+    private Vector3 middlePoint;
+    private bool boosting;
+
+
+    void Start()
+    {
+        middlePoint = new Vector3(mapSize.x/2-0.5f, 4, mapSize.y/2-0.5f);
+    }
 
     void Update()
     {
-        if(Input.GetKeyUp(KeyCode.A))
-        {
-            currentPosition--;
-            if(currentPosition < 0)
-                currentPosition = positions.Length-1;
-            transform.Rotate(new Vector3(0, 1, 0), 90);
-        }
-        if(Input.GetKeyUp(KeyCode.D))
-        {
-            currentPosition++;
-            if(currentPosition >= positions.Length)
-                currentPosition = 0;
-            transform.Rotate(new Vector3(0, 1, 0), -90);
-        }
+        boosting = Input.GetKey(KeyCode.LeftShift);
     }
 
     void FixedUpdate()
     {
-        transform.position = positions[currentPosition];
+        transform.RotateAround(middlePoint,
+                                new Vector3(0, 1, 0),
+                                Input.GetAxis("Horizontal") * cameraSpeed * Time.deltaTime * -1 * (boosting ? 2 : 1));
     }
 }
