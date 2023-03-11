@@ -10,18 +10,21 @@ public class MapLogic : MonoBehaviour
         public Tile[] tiles;
     }
 
-    public TileList tiles = new TileList();
-    private TileLogic[,] mapTiles;
+    private GameObject[,] mapTiles;
     private int mapSizeX;
     private int mapSizeY;
 
-    public GameObject[] tileTypes;
+    public TileList tiles = new TileList();
     public TextAsset mapFile;
+    public GameObject defaultTile;
+    public CameraController cam;
 
     // Start is called before the first frame update
     void Start()
     {
         mapTiles = LoadTiles();
+
+        cam.mapSize = new Vector2(mapSizeX, mapSizeY);
     }
 
     // Update is called once per frame
@@ -30,28 +33,30 @@ public class MapLogic : MonoBehaviour
         
     }
 
-    private TileLogic[,] LoadTiles()
+    private GameObject[,] LoadTiles()
     {
         tiles = JsonUtility.FromJson<TileList>(mapFile.text);
-        mapSizeX = tiles.tiles[tiles.tiles.Length-1].position[0]+1;
-        mapSizeY = tiles.tiles[tiles.tiles.Length-1].position[1]+1;
-        TileLogic[,] map = new TileLogic[mapSizeX,mapSizeY];
+        mapSizeX = int.Parse(mapFile.name.Split(" ")[1]);
+        mapSizeY = int.Parse(mapFile.name.Split(" ")[2]);
+
+        GameObject[,] map = new GameObject[mapSizeX,mapSizeY];
 
         for(int y = 0; y < mapSizeY; y++)
         {
             for(int x = 0; x < mapSizeX; x++)
             {
-                Tile currentTileStats = tiles.tiles[(y*mapSizeX)+x];
-                GameObject currentTile = Instantiate(tileTypes[currentTileStats.tileType]);
+                Tile currentTileStats = tiles.tiles[x + (mapSizeX * y)];
+                GameObject currentTile = Instantiate(defaultTile);
+
+                int tileX = currentTileStats.position[0];
+                int tileY = currentTileStats.position[1];
+
                 currentTile.transform.parent = this.transform;
-                TileLogic currentLogic = currentTile.AddComponent<TileLogic>();
-                currentLogic.stats = currentTileStats;
+                currentTile.transform.position = new Vector3(tileX,0,tileY);
+                currentTile.name = "["+tileX+","+tileY+"]";
 
-                currentTile.transform.position = new Vector2(x,y);
-                currentLogic.stats = currentTileStats;
-                currentTile.name = "["+x+","+y+"]";
-
-                map[x,y] = currentLogic;
+                currentTile.GetComponent<TileLogic>().stats = currentTileStats;
+                map[tileX,tileY] = currentTile;
             }
         }
 
@@ -68,7 +73,7 @@ public class MapLogic : MonoBehaviour
             {
                 if(Mathf.Abs(unit.position.x - x) + Mathf.Abs(unit.position.y - y) <= unit.getMovement())
                 {
-                    mapTiles[x,y].setActiveRange(unit);
+                    mapTiles[x,y].GetComponent<TileLogic>().setActiveRange(unit);
                 }
             }
         }
@@ -80,7 +85,7 @@ public class MapLogic : MonoBehaviour
         {
             for(int x = 0; x < mapSizeX; x++)
             {
-                mapTiles[x,y].resetTile();
+                mapTiles[x,y].GetComponent<TileLogic>().resetTile();
             }
         }
     }

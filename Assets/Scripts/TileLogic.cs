@@ -4,23 +4,34 @@ using UnityEngine;
 
 public class TileLogic : MonoBehaviour
 {
-    private Color defaultColor;
-    private Color hoveredColor = new Color(0.4f, 1.0f, 0.4f, 0.8f);
-    private Color activeColor = new Color(0.6f, 1.0f, 0.6f, 0.8f);
-    private Color activeRangeColor = new Color(0.6f, 0.6f, 1.0f, 0.8f);
-    private Unit unitMoving;
-    private SpriteRenderer tileRenderer;
-    private bool hovered = false;
-    private bool activeMovement = false;
+    public int DEFAULT = 0;
+    public int GRASS = 1;
+    public int WATER = 2;
+    public int LAVA = 3;
 
+    public int DISABLED = 0;
+    public int HOVERED = 1;
+    public int ACTIVE = 2;
+    public int ACTIVE_RANGE = 3;    
+    
+    private Renderer tileRenderer;
+
+    public Material[] indicatorMaterials;
+    public Material[] tileMaterials;
+    public GameObject tileIndicator;
     public Tile stats;
     public Unit unitOnTile;
+    public Unit unitMoving;
+    public bool isHovered = false;
+    public bool activeMovement = false;
 
-    // Start is called before the first frame update
-    void Awake()
+
+    void Start()
     {
-        tileRenderer = GetComponent<SpriteRenderer>();
-        defaultColor = tileRenderer.color;
+        tileRenderer = GetComponent<Renderer>();
+        if(stats.tileType <= DEFAULT)
+            stats.tileType = DEFAULT;
+        tileRenderer.material = tileMaterials[DEFAULT];
     }
 
     // Update is called once per frame
@@ -32,19 +43,21 @@ public class TileLogic : MonoBehaviour
     void FixedUpdate()
     {
         if(!activeMovement)
-            tileRenderer.color = hovered ? hoveredColor : defaultColor;
+            tileIndicator.GetComponent<Renderer>().material = isHovered ? indicatorMaterials[HOVERED] : indicatorMaterials[DISABLED];
+
+        tileRenderer.material = tileMaterials[stats.tileType];
     }
 
     public void setActiveRange(Unit unit)
     {
-        tileRenderer.color = activeRangeColor;
+        tileIndicator.GetComponent<Renderer>().material = indicatorMaterials[ACTIVE_RANGE];
         activeMovement = true;
         unitMoving = unit;
     }
 
     public void resetTile()
     {
-        tileRenderer.color = defaultColor;
+        tileIndicator.GetComponent<Renderer>().material = indicatorMaterials[DISABLED];
         activeMovement = false;
     }
 
@@ -61,19 +74,19 @@ public class TileLogic : MonoBehaviour
         }
         else
         {
-            tileRenderer.color = activeColor;
+            tileIndicator.GetComponent<Renderer>().material = indicatorMaterials[ACTIVE];
             toggleUnitMenu();
         }
     }
 
     void OnMouseOver()
     {
-        hovered = true;
+        isHovered = true;
     }
 
     void OnMouseExit()
     {
-        hovered = false;
+        isHovered = false;
     }
 
     public void toggleUnitMenu()
