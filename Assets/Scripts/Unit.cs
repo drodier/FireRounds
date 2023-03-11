@@ -17,7 +17,7 @@ public class Unit : MonoBehaviour
 
     public void FixedUpdate()
     {
-        transform.position = new Vector3(position.x, position.y, -1);
+        transform.position = new Vector3(position.x, currentTile.GetComponent<TileLogic>().stats.height, position.y);
     }
     
     public int getMovement()
