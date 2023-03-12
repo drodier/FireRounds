@@ -19,7 +19,7 @@ public class IndicatorLogic : MonoBehaviour
         }
         else
         {
-            tile.tileIndicator.GetComponent<Renderer>().material = tile.indicatorMaterials[tile.ACTIVE];
+            tile.tileIndicator.GetComponent<Renderer>().material = tile.indicatorMaterials[TileLogic.ACTIVE];
             tile.toggleUnitMenu();
         }
     }
