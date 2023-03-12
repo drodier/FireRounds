@@ -8,23 +8,30 @@ public class MapLogic : MonoBehaviour
     public class TileList
     {
         public Tile[] tiles;
+
+        public TileList(Vector2 size)
+        {
+            tiles = new Tile[(int)(size.x * size.y)];
+        }
+        public TileList()
+        {
+            tiles = new Tile[25];
+        }
     }
 
     private GameObject[,] mapTiles;
-    private int mapSizeX;
-    private int mapSizeY;
 
+    public int mapSizeX;
+    public int mapSizeY;
     public TileList tiles = new TileList();
-    public TextAsset mapFile;
     public GameObject defaultTile;
     public CameraController cam;
+    public string mapFile;
 
     // Start is called before the first frame update
     void Start()
     {
-        mapTiles = LoadTiles();
 
-        cam.mapSize = new Vector2(mapSizeX, mapSizeY);
     }
 
     // Update is called once per frame
@@ -35,9 +42,10 @@ public class MapLogic : MonoBehaviour
 
     private GameObject[,] LoadTiles()
     {
-        tiles = JsonUtility.FromJson<TileList>(mapFile.text);
-        mapSizeX = int.Parse(mapFile.name.Split(" ")[1]);
-        mapSizeY = int.Parse(mapFile.name.Split(" ")[2]);
+        tiles = JsonUtility.FromJson<TileList>(mapFile.Split("|")[0]);
+
+        mapSizeX = int.Parse(mapFile.Split("|")[1]);
+        mapSizeY = int.Parse(mapFile.Split("|")[2]);
 
         GameObject[,] map = new GameObject[mapSizeX,mapSizeY];
 
@@ -60,7 +68,8 @@ public class MapLogic : MonoBehaviour
             }
         }
 
-        GameObject.Find("GameManager").GetComponent<UnitsManager>().LoadUnits();
+        if(GameObject.Find("GameManager") != null)
+            GameObject.Find("GameManager").GetComponent<UnitsManager>().LoadUnits();
 
         return map;
     }
@@ -88,5 +97,12 @@ public class MapLogic : MonoBehaviour
                 mapTiles[x,y].GetComponent<TileLogic>().resetTile();
             }
         }
+    }
+
+    public void generateMap()
+    {
+        mapTiles = LoadTiles();
+
+        cam.mapSize = new Vector2(mapSizeX, mapSizeY);
     }
 }
