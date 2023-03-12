@@ -8,20 +8,7 @@ public class IndicatorLogic : MonoBehaviour
 
     void OnMouseDown()
     {
-        if(tile.activeMovement)
-        {
-            if(tile.unitOnTile == null)
-            {
-                tile.unitOnTile = tile.unitMoving;
-                tile.unitOnTile.move(tile);
-                FindObjectOfType<MapLogic>().resetTiles();
-            }
-        }
-        else
-        {
-            tile.tileIndicator.GetComponent<Renderer>().material = tile.indicatorMaterials[TileLogic.ACTIVE];
-            tile.toggleUnitMenu();
-        }
+        tile.ClickEvent();
     }
 
     void OnMouseOver()

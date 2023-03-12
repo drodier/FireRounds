@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 
 public class TileLogic : MonoBehaviour
 {
@@ -45,16 +43,15 @@ public class TileLogic : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(!isEditable)
-        {
-            if(!activeMovement)
-                tileIndicator.GetComponent<Renderer>().material = isHovered ? indicatorMaterials[HOVERED] : indicatorMaterials[DISABLED];
+        if(!activeMovement)
+            tileIndicator.GetComponent<Renderer>().material = isHovered ? indicatorMaterials[HOVERED] : indicatorMaterials[DISABLED];
 
-            tileRenderer.material = tileMaterials[stats.tileType];
-        }
-        else
-        {
+        tileRenderer.material = tileMaterials[stats.tileType];
 
+        if(isEditable)
+        {
+            transform.localScale = new Vector3(transform.localScale.x, 1+(stats.height-1)/2, transform.localScale.z);
+            transform.transform.position = new Vector3(transform.transform.position.x, (stats.height-1)/4, transform.transform.position.z);
         }
     }
 
@@ -74,7 +71,7 @@ public class TileLogic : MonoBehaviour
         activeMovement = false;
     }
 
-    void OnMouseDown()
+    public void ClickEvent()
     {
         if(!isEditable)
         {
@@ -95,8 +92,13 @@ public class TileLogic : MonoBehaviour
         }
         else
         {
-
+            showTileMenu();
         }
+    }
+
+    void OnMouseDown()
+    {
+        ClickEvent();
     }
 
     void OnMouseOver()
@@ -124,11 +126,9 @@ public class TileLogic : MonoBehaviour
 
     public void showTileMenu()
     {
-        GameObject.Find("tileType").GetComponent<TMP_Dropdown>().value = stats.tileType;
-        GameObject.Find("height").GetComponent<TMP_InputField>().text = stats.height.ToString();
-        GameObject.Find("walkable").GetComponent<Toggle>().isOn = stats.walkable;
-        GameObject.Find("flyable").GetComponent<Toggle>().isOn = stats.flyable;
-        GameObject.Find("slowing").GetComponent<TMP_InputField>().text = stats.slowing.ToString();
-        GameObject.Find("damaging").GetComponent<TMP_InputField>().text = stats.damaging.ToString();
+        GameObject TileMenu = GameObject.Find("TileMenu");
+
+        TileMenu.GetComponent<TileEditor>().setTile(this);
+        TileMenu.GetComponent<Canvas>().enabled = true;
     }
 }
