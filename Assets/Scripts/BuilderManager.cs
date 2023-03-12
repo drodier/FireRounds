@@ -16,6 +16,7 @@ public class BuilderManager : MonoBehaviour
 
     void Start()
     {
+
     }
 
     public void GenerateMap()
@@ -48,6 +49,6 @@ public class BuilderManager : MonoBehaviour
         map.tiles = tiles;
         map.cam = cam;
 
-        map.generateMap();
+        map.generateMap(true);
     }
 }
