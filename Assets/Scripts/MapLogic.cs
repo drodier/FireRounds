@@ -99,10 +99,26 @@ public class MapLogic : MonoBehaviour
         }
     }
 
-    public void generateMap()
+    public void generateMap(bool isBuilder)
     {
         mapTiles = LoadTiles();
 
         cam.mapSize = new Vector2(mapSizeX, mapSizeY);
+
+        if(isBuilder)
+        {
+            setBuilderMode();
+        }
+    }
+
+    private void setBuilderMode()
+    {
+        for(int y = 0; y < mapSizeY; y++)
+        {
+            for(int x = 0; x < mapSizeX; x++)
+            {
+                mapTiles[x,y].GetComponent<TileLogic>().isEditable = true;
+            }
+        }
     }
 }
