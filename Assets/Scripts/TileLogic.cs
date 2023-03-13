@@ -92,6 +92,7 @@ public class TileLogic : MonoBehaviour
         }
         else
         {
+            GameObject.Find("BuilderManager").GetComponent<BuilderManager>().PaintTile(this);
             showTileMenu();
         }
     }
@@ -104,6 +105,8 @@ public class TileLogic : MonoBehaviour
     void OnMouseOver()
     {
         isHovered = true;
+        if(Input.GetMouseButton(0))
+            ClickEvent();
     }
 
     void OnMouseExit()

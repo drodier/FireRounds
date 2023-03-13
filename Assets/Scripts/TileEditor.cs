@@ -84,7 +84,6 @@ public class TileEditor : MonoBehaviour
 
     public void openMenu()
     {
-        isOpen = true;
         GetComponent<Canvas>().enabled = true;
     }
     

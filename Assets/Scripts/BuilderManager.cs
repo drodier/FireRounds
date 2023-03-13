@@ -6,6 +6,12 @@ using TMPro;
 
 public class BuilderManager : MonoBehaviour
 {
+    [System.Serializable]
+    public class Brush{
+        public string brushType = "None";
+        public string brushData = "";
+    }
+
     public GameObject mapPrefab;
     public MapLogic map;
     public Canvas mapInfo;
@@ -13,10 +19,11 @@ public class BuilderManager : MonoBehaviour
     public TMP_InputField yInput;
     public TMP_InputField mapName;
     public CameraController cam;
+    public Brush currentBrush;
 
     void Start()
     {
-
+        currentBrush = new Brush();
     }
 
     public void GenerateMap()
@@ -50,5 +57,32 @@ public class BuilderManager : MonoBehaviour
         map.cam = cam;
 
         map.generateMap(true);
+    }
+
+    public void PaintTile(TileLogic hoveredTile)
+    {
+        switch(currentBrush.brushType)
+        {
+            case "Type":
+                hoveredTile.stats.tileType = int.Parse(currentBrush.brushData);
+            break;
+            case "Height":
+                hoveredTile.stats.height = float.Parse(currentBrush.brushData);
+            break;
+            case "Walkable":
+                hoveredTile.stats.walkable = bool.Parse(currentBrush.brushData);
+            break;
+            case "Flyable":
+                hoveredTile.stats.flyable = bool.Parse(currentBrush.brushData);
+            break;
+            case "Slowing":
+                hoveredTile.stats.slowing = int.Parse(currentBrush.brushData);
+            break;
+            case "Damaging":
+                hoveredTile.stats.damaging = int.Parse(currentBrush.brushData);
+            break;
+            default:
+            break;
+        }
     }
 }

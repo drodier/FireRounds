@@ -14,6 +14,8 @@ public class IndicatorLogic : MonoBehaviour
     void OnMouseOver()
     {
         tile.isHovered = true;
+        if(Input.GetMouseButton(0))
+            tile.ClickEvent();
     }
 
     void OnMouseExit()
