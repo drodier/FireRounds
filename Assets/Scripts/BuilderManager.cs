@@ -73,6 +73,7 @@ public class BuilderManager : MonoBehaviour
 
         map.generateMap(true);
         GameObject.Find("BrushCanvas").GetComponent<Canvas>().enabled = true;
+        GameObject.Find("Camera").GetComponent<CameraController>().isLocked = false;
     }
 
     public void PaintTile(TileLogic hoveredTile)

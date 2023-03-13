@@ -3385,7 +3385,7 @@ RectTransform:
   - {fileID: 569089323}
   - {fileID: 674879347}
   m_Father: {fileID: 1331547455}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -3420,7 +3420,7 @@ MonoBehaviour:
   closedPosition: {x: -60, y: 0}
   isOpen: 0
   drawer: {fileID: 569089323}
-  animationSpeed: 200
+  animationSpeed: 500
   direction: 1
   drawerObject: {fileID: 569089322}
 --- !u!114 &528349997
@@ -3786,6 +3786,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Camera
       objectReference: {fileID: 0}
+    - target: {fileID: 5040277545572984913, guid: 23bbf9cc61edb2e49a6c201cba28ccde, type: 3}
+      propertyPath: cameraSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5040277545572984913, guid: 23bbf9cc61edb2e49a6c201cba28ccde, type: 3}
+      propertyPath: mouseSensitivity
+      value: 3.5
+      objectReference: {fileID: 0}
     - target: {fileID: 5040277545700887041, guid: 23bbf9cc61edb2e49a6c201cba28ccde, type: 3}
       propertyPath: m_BackGroundColor.b
       value: 0.7169812
@@ -3796,6 +3804,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5040277545700887041, guid: 23bbf9cc61edb2e49a6c201cba28ccde, type: 3}
       propertyPath: m_BackGroundColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5040277545700887294, guid: 23bbf9cc61edb2e49a6c201cba28ccde, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.92387956
+      objectReference: {fileID: 0}
+    - target: {fileID: 5040277545700887294, guid: 23bbf9cc61edb2e49a6c201cba28ccde, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5040277545700887294, guid: 23bbf9cc61edb2e49a6c201cba28ccde, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.38268343
+      objectReference: {fileID: 0}
+    - target: {fileID: 5040277545700887294, guid: 23bbf9cc61edb2e49a6c201cba28ccde, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5040277545700887294, guid: 23bbf9cc61edb2e49a6c201cba28ccde, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -7467,7 +7495,7 @@ RectTransform:
   m_Children:
   - {fileID: 1751410325}
   m_Father: {fileID: 1331547455}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -8893,8 +8921,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1832667865}
-  - {fileID: 1169831504}
   - {fileID: 528349994}
+  - {fileID: 1169831504}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8933,7 +8961,7 @@ MonoBehaviour:
       damaging: 0
   isDrawing: 0
   brushPointer: {fileID: 674879345}
-  brushDisplacement: {x: 20, y: -21, z: 0}
+  brushDisplacement: {x: 20, y: -21, z: -1}
 --- !u!1 &1348293555
 GameObject:
   m_ObjectHideFlags: 0

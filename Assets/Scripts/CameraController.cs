@@ -6,25 +6,51 @@ public class CameraController : MonoBehaviour
 {
     public Vector2 mapSize;
     public float cameraSpeed;
+    public bool isLocked = true;
+    public float mouseSensitivity = 2f;
+    public float cameraVerticalRotation = 0f;
+    public float cameraHorizontalRotation = 0f;
 
-    private Vector3 middlePoint;
     private bool boosting;
+    private bool isHeld;
 
 
     void Start()
     {
-        middlePoint = new Vector3(mapSize.x/2-0.5f, 4, mapSize.y/2-0.5f);
+        
     }
 
     void Update()
     {
         boosting = Input.GetKey(KeyCode.LeftShift);
+        isHeld = Input.GetKey(KeyCode.LeftAlt);
+
+        if(!isHeld && !isLocked)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            float inputX = Input.GetAxis("Mouse X")*mouseSensitivity;
+            float inputY = Input.GetAxis("Mouse Y")*mouseSensitivity;
+
+            cameraVerticalRotation -= inputY;
+            cameraVerticalRotation = Mathf.Clamp(cameraVerticalRotation, -90f, 90f);
+            GetComponentInChildren<Camera>().transform.localEulerAngles = Vector3.right*cameraVerticalRotation;
+
+            cameraHorizontalRotation += inputX;
+            transform.localEulerAngles = Vector3.up*cameraHorizontalRotation;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.None;
+        }
     }
 
     void FixedUpdate()
     {
-        transform.RotateAround(middlePoint,
-                                new Vector3(0, 1, 0),
-                                Input.GetAxis("Horizontal") * cameraSpeed * Time.deltaTime * -1 * (boosting ? 2 : 1));
+        if(!isHeld && !isLocked)
+        {
+            transform.position += transform.forward * Input.GetAxis("Vertical") * cameraSpeed * (boosting ? 2 : 1) * Time.deltaTime;
+            transform.position += transform.right * Input.GetAxis("Horizontal") * cameraSpeed * (boosting ? 2 : 1) * Time.deltaTime;
+        }
+
     }
 }
