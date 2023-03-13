@@ -4532,7 +4532,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34828acab3633194fa2485f274d4df0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openPosition: {x: -100, y: 0}
+  openPosition: {x: -80, y: 0}
   closedPosition: {x: 75, y: 0}
   animationSpeed: 100
   isOpen: 0
