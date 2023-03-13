@@ -140,7 +140,7 @@ Transform:
   m_GameObject: {fileID: 8313852982484613097}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.95, y: 0.95, z: 0.95}
+  m_LocalScale: {x: 1, y: 0.95, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1946647983562020858}
@@ -222,14 +222,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e32101cf0f13b9942aeb8fa81c0434b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DEFAULT: 0
-  GRASS: 1
-  WATER: 2
-  LAVA: 3
-  DISABLED: 0
-  HOVERED: 1
-  ACTIVE: 2
-  ACTIVE_RANGE: 3
   indicatorMaterials:
   - {fileID: 2100000, guid: a7fde38e0a174b2478521789ebc08079, type: 2}
   - {fileID: 2100000, guid: 382843186e72ac94482f186afc1e97df, type: 2}
@@ -252,4 +244,5 @@ MonoBehaviour:
   unitOnTile: {fileID: 0}
   unitMoving: {fileID: 0}
   isHovered: 0
+  isEditable: 0
   activeMovement: 0

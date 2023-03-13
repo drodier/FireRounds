@@ -50,8 +50,8 @@ public class TileLogic : MonoBehaviour
 
         if(isEditable)
         {
-            transform.localScale = new Vector3(transform.localScale.x, 1+(stats.height-1)/2, transform.localScale.z);
-            transform.transform.position = new Vector3(transform.transform.position.x, (stats.height-1)/4, transform.transform.position.z);
+            transform.localScale = new Vector3(transform.localScale.x, 1+(stats.height-1)/4, transform.localScale.z);
+            transform.transform.position = new Vector3(transform.transform.position.x, (stats.height-1)/8, transform.transform.position.z);
         }
     }
 
@@ -126,9 +126,8 @@ public class TileLogic : MonoBehaviour
 
     public void showTileMenu()
     {
-        GameObject TileMenu = GameObject.Find("TileMenu");
+        TileEditor TileMenu = GameObject.Find("TileCanvas").GetComponent<TileEditor>();
 
-        TileMenu.GetComponent<TileEditor>().setTile(this);
-        TileMenu.GetComponent<Canvas>().enabled = true;
+        TileMenu.setTile(this);
     }
 }
