@@ -6,10 +6,62 @@ using TMPro;
 
 public class TileEditor : MonoBehaviour
 {
+    private TMP_Text tilePositionText;
+    private TMP_Dropdown tileTypeInput;
+    private TMP_InputField tileHeightInput;
+    private Toggle tileWalkableInput;
+    private Toggle tileFlyableInput;
+    private TMP_InputField tileSlowingInput;
+    private TMP_InputField tileDamagingInput;
+
     private TileLogic selectedTile = null;
+
+    public Vector2 openPosition;
+    public Vector2 closedPosition;
+    public float animationSpeed = 100;
+    public bool isOpen = false;
+    public RectTransform drawer;
+
+    void Start()
+    {
+        tilePositionText = GameObject.Find("TilePosition").GetComponent<TMP_Text>();
+        tileTypeInput = GameObject.Find("TileTypeInput").GetComponent<TMP_Dropdown>();
+        tileHeightInput = GameObject.Find("HeightInput").GetComponent<TMP_InputField>();
+        tileWalkableInput = GameObject.Find("WalkableInput").GetComponent<Toggle>();
+        tileFlyableInput = GameObject.Find("FlyableInput").GetComponent<Toggle>();
+        tileSlowingInput =  GameObject.Find("SlowingInput").GetComponent<TMP_InputField>();
+        tileDamagingInput = GameObject.Find("DamagingInput").GetComponent<TMP_InputField>();
+    }
 
     void FixedUpdate()
     {
+        animateMenu();
+    }
+
+    private void animateMenu()
+    {
+        if(isOpen)
+        {
+            if(drawer.anchoredPosition.x > openPosition.x)
+            {
+                drawer.anchoredPosition -= new Vector2(animationSpeed * Time.deltaTime, 0);
+            }
+            else
+            {
+                drawer.anchoredPosition = openPosition;
+            }
+        }
+        else
+        {
+            if(drawer.anchoredPosition.x < closedPosition.x)
+            {
+                drawer.anchoredPosition += new Vector2(animationSpeed * Time.deltaTime, 0);
+            }
+            else
+            {
+                drawer.anchoredPosition = closedPosition;
+            }
+        }
     }
 
     public void setTile(TileLogic tile)
@@ -18,15 +70,27 @@ public class TileEditor : MonoBehaviour
 
         if(selectedTile != null)
         {
-            GameObject.Find("TilePosition").GetComponent<TMP_Text>().text = selectedTile.name;
-
-            GameObject.Find("TileTypeInput").GetComponent<TMP_Dropdown>().value = selectedTile.stats.tileType;
-            GameObject.Find("HeightInput").GetComponent<TMP_InputField>().text = selectedTile.stats.height.ToString();
-            GameObject.Find("WalkableInput").GetComponent<Toggle>().isOn = selectedTile.stats.walkable;
-            GameObject.Find("FlyableInput").GetComponent<Toggle>().isOn = selectedTile.stats.flyable;
-            GameObject.Find("SlowingInput").GetComponent<TMP_InputField>().text = selectedTile.stats.slowing.ToString();
-            GameObject.Find("DamagingInput").GetComponent<TMP_InputField>().text = selectedTile.stats.damaging.ToString();
+            tilePositionText.text = selectedTile.name;
+            tileTypeInput.value = selectedTile.stats.tileType;
+            tileHeightInput.text = selectedTile.stats.height.ToString();
+            tileWalkableInput.isOn = selectedTile.stats.walkable;
+            tileFlyableInput.isOn = selectedTile.stats.flyable;
+            tileSlowingInput.text = selectedTile.stats.slowing.ToString();
+            tileDamagingInput.text = selectedTile.stats.damaging.ToString();
         }
+
+        openMenu();
+    }
+
+    public void openMenu()
+    {
+        isOpen = true;
+        GetComponent<Canvas>().enabled = true;
+    }
+    
+    public void toggleMenu()
+    {
+        isOpen = !isOpen;
     }
 
     public void ChangeType()

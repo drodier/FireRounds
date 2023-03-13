@@ -106,9 +106,7 @@ public class MapLogic : MonoBehaviour
         cam.mapSize = new Vector2(mapSizeX, mapSizeY);
 
         if(isBuilder)
-        {
             setBuilderMode();
-        }
     }
 
     private void setBuilderMode()
