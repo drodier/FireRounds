@@ -56,15 +56,12 @@ public class MapLogic : MonoBehaviour
                 Tile currentTileStats = tiles.tiles[x + (mapSizeX * y)];
                 GameObject currentTile = Instantiate(defaultTile);
 
-                int tileX = currentTileStats.position[0];
-                int tileY = currentTileStats.position[1];
-
                 currentTile.transform.parent = this.transform;
-                currentTile.transform.position = new Vector3(tileX,0,tileY);
-                currentTile.name = "["+tileX+","+tileY+"]";
+                currentTile.transform.position = new Vector3(x,0,y);
+                currentTile.name = "["+x+","+y+"]";
 
                 currentTile.GetComponent<TileLogic>().stats = currentTileStats;
-                map[tileX,tileY] = currentTile;
+                map[x,y] = currentTile;
             }
         }
 

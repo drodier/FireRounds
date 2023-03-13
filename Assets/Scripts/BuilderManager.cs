@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System.IO;
 using TMPro;
 
@@ -8,9 +9,15 @@ public class BuilderManager : MonoBehaviour
 {
     [System.Serializable]
     public class Brush{
-        public string brushType = "None";
-        public string brushData = "";
+        public Tile brushStats = new Tile();
     }
+
+    public TMP_Dropdown BrushType;
+    public TMP_InputField BrushHeight;
+    public Toggle BrushWalkable;
+    public Toggle BrushFlyable;
+    public TMP_InputField BrushSlowing;
+    public TMP_InputField BrushDamaging;
 
     public GameObject mapPrefab;
     public MapLogic map;
@@ -20,10 +27,20 @@ public class BuilderManager : MonoBehaviour
     public TMP_InputField mapName;
     public CameraController cam;
     public Brush currentBrush;
+    public bool isDrawing = false;
+
+    public Image brushPointer;
+    public Vector3 brushDisplacement;
 
     void Start()
     {
         currentBrush = new Brush();
+    }
+
+    void Update()
+    {
+        if(isDrawing)
+            brushPointer.rectTransform.position = Input.mousePosition +  brushDisplacement;
     }
 
     public void GenerateMap()
@@ -45,8 +62,6 @@ public class BuilderManager : MonoBehaviour
             for(int x=0;x<xSize;x++)
             {
                 tiles.tiles[x + (xSize * y)] = new Tile();
-                tiles.tiles[x + (xSize * y)].position[0] = x;
-                tiles.tiles[x + (xSize * y)].position[1] = y;
             }
         }
 
@@ -62,28 +77,41 @@ public class BuilderManager : MonoBehaviour
 
     public void PaintTile(TileLogic hoveredTile)
     {
-        switch(currentBrush.brushType)
+        if(isDrawing)
         {
-            case "Type":
-                hoveredTile.stats.tileType = int.Parse(currentBrush.brushData);
-            break;
-            case "Height":
-                hoveredTile.stats.height = float.Parse(currentBrush.brushData);
-            break;
-            case "Walkable":
-                hoveredTile.stats.walkable = bool.Parse(currentBrush.brushData);
-            break;
-            case "Flyable":
-                hoveredTile.stats.flyable = bool.Parse(currentBrush.brushData);
-            break;
-            case "Slowing":
-                hoveredTile.stats.slowing = int.Parse(currentBrush.brushData);
-            break;
-            case "Damaging":
-                hoveredTile.stats.damaging = int.Parse(currentBrush.brushData);
-            break;
-            default:
-            break;
+            hoveredTile.stats.tileType = currentBrush.brushStats.tileType;
+            hoveredTile.stats.height = currentBrush.brushStats.height;
+            hoveredTile.stats.walkable = currentBrush.brushStats.walkable;
+            hoveredTile.stats.flyable = currentBrush.brushStats.flyable;
+            hoveredTile.stats.slowing = currentBrush.brushStats.slowing;
+            hoveredTile.stats.damaging = currentBrush.brushStats.damaging;
         }
+    }
+
+    public void ApplyBrush()
+    {
+        currentBrush.brushStats.tileType = BrushType.value;
+        currentBrush.brushStats.height = int.Parse(BrushHeight.text);
+        currentBrush.brushStats.walkable = BrushWalkable.isOn;
+        currentBrush.brushStats.flyable = BrushFlyable.isOn;
+        currentBrush.brushStats.slowing = int.Parse(BrushSlowing.text);
+        currentBrush.brushStats.damaging = int.Parse(BrushDamaging.text);
+
+        isDrawing = true;
+        Cursor.visible = false;
+    }
+
+    public void ResetBrush()
+    {
+        currentBrush.brushStats.tileType = 0;
+        currentBrush.brushStats.height = 1;
+        currentBrush.brushStats.walkable = true;
+        currentBrush.brushStats.flyable = true;
+        currentBrush.brushStats.slowing = 0;
+        currentBrush.brushStats.damaging = 0;
+
+        isDrawing = false;
+        brushPointer.rectTransform.position = new Vector3(-650, -300, -1);
+        Cursor.visible = true;
     }
 }
