@@ -57,6 +57,7 @@ public class BuilderManager : MonoBehaviour
         map.cam = cam;
 
         map.generateMap(true);
+        GameObject.Find("BrushCanvas").GetComponent<Canvas>().enabled = true;
     }
 
     public void PaintTile(TileLogic hoveredTile)

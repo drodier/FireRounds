@@ -16,11 +16,6 @@ public class TileEditor : MonoBehaviour
 
     private TileLogic selectedTile = null;
 
-    public Vector2 openPosition;
-    public Vector2 closedPosition;
-    public float animationSpeed = 100;
-    public bool isOpen = false;
-    public RectTransform drawer;
 
     void Start()
     {
@@ -31,37 +26,6 @@ public class TileEditor : MonoBehaviour
         tileFlyableInput = GameObject.Find("FlyableInput").GetComponent<Toggle>();
         tileSlowingInput =  GameObject.Find("SlowingInput").GetComponent<TMP_InputField>();
         tileDamagingInput = GameObject.Find("DamagingInput").GetComponent<TMP_InputField>();
-    }
-
-    void FixedUpdate()
-    {
-        animateMenu();
-    }
-
-    private void animateMenu()
-    {
-        if(isOpen)
-        {
-            if(drawer.anchoredPosition.x > openPosition.x)
-            {
-                drawer.anchoredPosition -= new Vector2(animationSpeed * Time.deltaTime, 0);
-            }
-            else
-            {
-                drawer.anchoredPosition = openPosition;
-            }
-        }
-        else
-        {
-            if(drawer.anchoredPosition.x < closedPosition.x)
-            {
-                drawer.anchoredPosition += new Vector2(animationSpeed * Time.deltaTime, 0);
-            }
-            else
-            {
-                drawer.anchoredPosition = closedPosition;
-            }
-        }
     }
 
     public void setTile(TileLogic tile)
@@ -85,11 +49,6 @@ public class TileEditor : MonoBehaviour
     public void openMenu()
     {
         GetComponent<Canvas>().enabled = true;
-    }
-    
-    public void toggleMenu()
-    {
-        isOpen = !isOpen;
     }
 
     public void ChangeType()
