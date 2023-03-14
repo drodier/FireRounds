@@ -28,19 +28,26 @@ public class BuilderManager : MonoBehaviour
     public CameraController cam;
     public Brush currentBrush;
     public bool isDrawing = false;
+    public bool isLoaded = false;
 
     public Image brushPointer;
     public Vector3 brushDisplacement;
 
+    private EscapeManager escapeMenu;
+
     void Start()
     {
         currentBrush = new Brush();
+        escapeMenu = GameObject.Find("EscapeMenu").GetComponent<EscapeManager>();
     }
 
     void Update()
     {
         if(isDrawing)
             brushPointer.rectTransform.position = Input.mousePosition +  brushDisplacement;
+
+        if(isLoaded && Input.GetKeyUp(KeyCode.Escape))
+            escapeMenu.ToggleMenu();
     }
 
     public void GenerateMap()
@@ -72,8 +79,11 @@ public class BuilderManager : MonoBehaviour
         map.cam = cam;
 
         map.generateMap(true);
+        escapeMenu.mapName = name;
         GameObject.Find("BrushCanvas").GetComponent<Canvas>().enabled = true;
         GameObject.Find("Camera").GetComponent<CameraController>().isLocked = false;
+
+        isLoaded = true;
     }
 
     public void PaintTile(TileLogic hoveredTile)
@@ -86,6 +96,8 @@ public class BuilderManager : MonoBehaviour
             hoveredTile.stats.flyable = currentBrush.brushStats.flyable;
             hoveredTile.stats.slowing = currentBrush.brushStats.slowing;
             hoveredTile.stats.damaging = currentBrush.brushStats.damaging;
+
+            escapeMenu.isSaved = false;
         }
     }
 
